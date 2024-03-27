@@ -1,21 +1,42 @@
 //
 //  ContentView.swift
-//  SpendTracker
+//  MoneyMinder
 //
-//  Created by Caroline Chan on 27/03/24.
+//  Created by Caroline Chan on 21/03/24.
 //
 
 import SwiftUI
 
-struct ContentView: View {
+struct ContentView: View {    
+    @State var mode: Int = 0
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        NavigationStack {
+            VStack {
+                Picker("", selection: $mode) {
+                    Text("Daily").tag(0)
+                    Text("Monthly").tag(1)
+                    
+                }
+                .pickerStyle(.segmented)
+                .padding(.vertical)
+                
+                TabView(selection: $mode) {
+                    DailyView().tag(0)
+                    
+                    MonthlyView().tag(1)
+                }
+                .tabViewStyle(.page)
+            }
+            .padding(.horizontal)
+            .navigationBarTitleDisplayMode(.inline)
+            .navigationTitle("SpendTracker")
+            .toolbar {
+                NavigationLink(destination: AddExpenseView().toolbarRole(.editor)) {
+                    Image(systemName: "plus")
+                }
+            }
         }
-        .padding()
     }
 }
 
